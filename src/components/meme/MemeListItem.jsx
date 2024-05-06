@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import eventFormatDate from "../../util/eventFormat";
 
 const Wrapper = styled.div`
     width: calc(100% - 32px);
@@ -19,11 +20,14 @@ const Wrapper = styled.div`
 const TitleText = styled.p`
     font-size: 36px;
     font-weight: bold;
+    margin-top: 20px;
 `
 
 const DateText = styled.p`
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
+    margin: 0px;
+    margin-bottom: 10px;
 `
 
 // 이미지를 스타일링할 컴포넌트 정의
@@ -57,9 +61,17 @@ function MemeListItem(props) {
             </ImageWrapper>
             
             {meme.isInProgress === true ? (
-                <TitleText>진행중</TitleText>
+                <>
+                    <TitleText>진행중</TitleText>
+                    <DateText>{eventFormatDate(meme.endDate)}</DateText>
+                </>
+
             ) : (
-                <DateText>{meme.startDate} ~ {meme.endDate}</DateText>
+                <>
+                    <TitleText>종료</TitleText>
+                    <DateText>{meme.startDate} ~ {meme.endDate}</DateText>
+                </>
+
             )}
         </Wrapper>
     )

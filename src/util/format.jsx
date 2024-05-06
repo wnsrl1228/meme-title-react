@@ -12,13 +12,15 @@ function formatDateDiff(createdAtString) {
 
     // 분 단위를 시간, 일, 주 등으로 변환하여 반환
     if (minutesDiff < 60) {
-        return `${minutesDiff} 분 전`;
+        if (minutesDiff === 0)
+            return `방금`
+        return `${minutesDiff}분 전`;
     } else if (minutesDiff < 24 * 60) {
-        return `${Math.floor(minutesDiff / 60)} 시간 전`;
+        return `${Math.floor(minutesDiff / 60)}시간 전`;
     } else if (minutesDiff < 7 * 24 * 60) {
-        return `${Math.floor(minutesDiff / (24 * 60))} 일 전`;
+        return `${Math.floor(minutesDiff / (24 * 60))}일 전`;
     } else {
-        return `${Math.floor(minutesDiff / (7 * 24 * 60))} 주 전`;
+        return `${Math.floor(minutesDiff / (7 * 24 * 60))}주 전`;
     }
 }
 export default formatDateDiff

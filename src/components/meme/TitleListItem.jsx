@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     border: none;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); /* 흐릿한 테두리 효과 */
     border-radius: 8px;
@@ -21,6 +21,8 @@ const Wrapper = styled.div`
 const TitleText = styled.p`
     font-size: 20px;
     font-weight: 500;
+    padding-left: 10px;
+    padding-right: 10px;
 `
 
 // 이미지를 스타일링할 컴포넌트 정의
@@ -35,7 +37,7 @@ const ImageWrapper = styled.div`
 const MemeImage = styled.img`
   width: 100%; // 너비 설정
   height: auto; // 높이 자동 조정
-  border-radius: 8px;
+  border-radius: 12px;
   transition: transform 0.3s ease; /* transform 속성에 대한 transition 효과 추가 */
   
   /* 마우스를 이미지 위로 올렸을 때 확대 효과 */
