@@ -2,7 +2,8 @@
 function eventFormatDate(endAtString) {
     // Date 객체로 변환
     const endAtDate = new Date(endAtString);
-
+    endAtDate.setHours(0, 0, 0, 0);
+    
     // 현재 날짜와의 차이 계산
     const currentDate = new Date();
     const timeDiff = endAtDate - currentDate; // 밀리초 단위의 차이
