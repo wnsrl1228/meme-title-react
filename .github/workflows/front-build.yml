@@ -11,10 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      
+      # 레포 불러오기
       - name: checkout Github Action
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
+      # .env에 있던 환경변수들을 등록해주는 단계
+      - name: .env setting
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> .env
+          echo "REACT_APP_KAKAO_CLIENT_ID=${{ secrets.REACT_APP_KAKAO_CLIENT_ID }}" >> .env
+          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> .env
+
       - name: install npm dependencies
         run: npm install
         
