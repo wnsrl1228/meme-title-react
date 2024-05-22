@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -67,7 +67,7 @@ const MemeViewPage = (props) => {
     };
 
     const [isLast, setIsLast] = useState(false);
-    const pageRef = useScrollPagination(fetchTitles, isLast);
+    const pageRef = useScrollPagination(fetchTitles, isLast, selectedCategory);
 
     const handleCategoryClick = (category) => {
         if (category !== selectedCategory) {
@@ -92,7 +92,7 @@ const MemeViewPage = (props) => {
                 navigate("/")
             });
         }
-    }, [])
+    }, [isInProgress, memeId, navigate, location.state])
 
     useEffect(() => {
         if (topTitlesError === false) {
@@ -106,7 +106,7 @@ const MemeViewPage = (props) => {
             });
         }
 
-    }, [selectedCategory])
+    }, [topTitlesError, memeId, navigate, selectedCategory])
 
     return (
         <Wrapper>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback} from "react";
 import {useNavigate, useParams } from "react-router-dom"; 
 import styled from "styled-components";
 import CommentList from "../components/comment/CommentList";
@@ -211,7 +211,7 @@ const TitleViewPage = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
 
 
-    const {isLoggedIn, memberInfo} = useAuth();
+    const {isLoggedIn} = useAuth();
     const refToScroll = useRef(null);
     const [loading, setLoading] = useState(true);
     // 함수가 실행되면 컴포넌트가 보이게끔 스크롤을 조정합니다.
@@ -219,18 +219,31 @@ const TitleViewPage = (props) => {
       refToScroll.current.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const fetchComments = async (page) => {
+    // const fetchComments = async (page) => {
+    //     const axiosInstance = isLoggedIn ? loggedInAxiosInstance : guestAxiosInstance;
+    //     try{
+    //         const url = `/titles/${titleId}/comments?page=${page}&size=10&sort=createdAt,DESC`;
+    //         const res = await axiosInstance.get(url);
+    //         setComments(res.data.comments);
+    //         setTotalPages(res.data.totalPages);
+    //         setCurrentPage(res.data.page + 1)
+    //     } catch (err){
+    //         alert(err);
+    //     }
+    // };
+
+    const fetchComments = useCallback(async (page) => {
         const axiosInstance = isLoggedIn ? loggedInAxiosInstance : guestAxiosInstance;
-        try{
+        try {
             const url = `/titles/${titleId}/comments?page=${page}&size=10&sort=createdAt,DESC`;
             const res = await axiosInstance.get(url);
             setComments(res.data.comments);
             setTotalPages(res.data.totalPages);
-            setCurrentPage(res.data.page + 1)
-        } catch (err){
+            setCurrentPage(res.data.page + 1);
+        } catch (err) {
             alert(err);
         }
-    };
+    }, [isLoggedIn, titleId]);
 
     const handleCommentCreate = (event) => {
 
@@ -329,7 +342,7 @@ const TitleViewPage = (props) => {
           });
 
         fetchComments(0)
-    }, [])
+    }, [isLoggedIn, navigate, titleId, fetchComments])
 
 
     return (

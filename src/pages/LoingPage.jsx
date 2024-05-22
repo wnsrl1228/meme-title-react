@@ -58,7 +58,7 @@ const LoginPage = (props) => {
             navigate(-1);
             return;
         }
-    }, [])
+    }, [isLoggedIn, navigate])
 
     return (
         <Wrapper>

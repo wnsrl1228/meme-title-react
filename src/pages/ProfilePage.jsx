@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TitleList from "../components/meme/TitleList";
 import { useNavigate, useParams } from "react-router-dom";
@@ -87,27 +87,6 @@ const Score = styled.span`
     border-radius: 5px;
 
 `;
-const EmailInput = styled.input`
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    background-color: gainsboro;
-`;
-
-const Button = styled.button`
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #0056b3; /* 마우스 커서를 올렸을 때의 색상 */
-    }
-`;
 
 const ProfileLabel = styled.p`
     font-size: 24px;
@@ -157,7 +136,7 @@ const ProfilePage = (props) => {
             alert(err.response.data.message);
         })
 
-    }, [])
+    }, [memberId, navigate])
 
 
 

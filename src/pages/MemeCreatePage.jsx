@@ -115,11 +115,11 @@ const MemeCreatePage = () => {
     }
 
     useEffect(() => {
-        if (!isLoggedIn || memberInfo != 1) {
+        if (!isLoggedIn || memberInfo !== 1) {
           navigate("/")
           return;
         }
-      }, []);
+      }, [isLoggedIn, memberInfo, navigate]);
 
     return (
         <Wrapper>

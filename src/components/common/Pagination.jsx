@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { PaginationContainer, PageButton } from '../common/PaginationStyles';
 
 const Pagination = ({ pageNumbers, currentPage, onPageChange }) => {

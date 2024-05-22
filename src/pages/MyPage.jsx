@@ -175,15 +175,14 @@ const MyPage = (props) => {
       refToScroll.current.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const fetchTitles = async (page) => {
-        loggedInAxiosInstance.get(`/member/titles?page=${page}&size=20&sort=createdAt,DESC`).then((res) => {
+    const fetchTitles = async (page, sort) => {
+        loggedInAxiosInstance.get(`/member/titles?page=${page}&size=20&sort=${sort},DESC`).then((res) => {
             setTitles(prevItems => [...prevItems, ...res.data.titles]);
             setIsLast(res.data.isLast);
         }).catch((err) => {
             alert(err.response.data.message);
         })
     };
-
     const [isLast, setIsLast] = useState(false);
     const pageRef = useScrollPagination(fetchTitles, isLast);
     
@@ -207,7 +206,7 @@ const MyPage = (props) => {
 
         fetchTitles(0);
 
-    }, [])
+    }, [isLoggedIn, navigate])
 
 
 

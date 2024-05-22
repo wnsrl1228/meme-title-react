@@ -88,14 +88,6 @@ const MenuLink = styled.a`
   }
 `;
 
-const Ranking = styled.a`
-  color: black; /* 링크 텍스트 색상 */
-  text-decoration: none; /* 밑줄 제거 */
-  &:hover {
-    text-decoration: underline; /* 호버시 밑줄 표시 */
-  }
-`;
-
 const ProfileContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -176,9 +168,8 @@ const Navbar = () => {
           // 전송 중 오류가 발생한 경우 처리합니다.
           alert(err.response.data.message);
       });
-      console.log(memberInfo)
   } 
-  }, [isLoggedIn]);
+  }, [isLoggedIn, updateMemberInfo]);
 
   return (
     <Wrapper>
