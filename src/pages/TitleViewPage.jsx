@@ -147,6 +147,7 @@ const LikeButton = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 4px;
+    font-family: "GmarketSans";
     cursor: pointer;
 
     &:hover {
@@ -161,6 +162,7 @@ const DeleteButton = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 4px;
+    font-family: "GmarketSans";
     cursor: pointer;
 
     &:hover {
@@ -189,6 +191,7 @@ const BackButton = styled.button`
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
+  font-family: "GmarketSans";
   cursor: pointer;
   transition: background-color 0.3s;
 

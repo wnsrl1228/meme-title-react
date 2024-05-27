@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { guestAxiosInstance } from "../api/axiosInterceptors";
 import TextInput from "../components/common/TextInput";
 import DefaultProfileImage from '../assets/profile_default_640.png'
+import useScrollPagination from "../hooks/useScrollPagination";
 
 const Wrapper = styled.div`
     padding: 16px;
@@ -55,6 +56,7 @@ const MyActivityButton = styled.button`
     background-color: white;
     border: 1px solid gainsboro;
     border-radius: 4px;
+    font-family: "GmarketSans";
 
 `
 const ProfileImage = styled.img`
@@ -115,7 +117,16 @@ const ProfilePage = (props) => {
 
     const navigate = useNavigate();
 
-
+    const fetchTitles = async (page, sort) => {
+        guestAxiosInstance.get(`/member/${memberId}/titles?page=${page}&size=20&sort=${sort},DESC`).then((res) => {
+            setTitles(prevItems => [...prevItems, ...res.data.titles]);
+            setIsLast(res.data.isLast);
+        }).catch((err) => {
+            alert(err.response.data.message);
+        })
+    };
+    const [isLast, setIsLast] = useState(false);
+    const pageRef = useScrollPagination(fetchTitles, isLast);
 
     useEffect(() => {
 
@@ -171,12 +182,16 @@ const ProfilePage = (props) => {
                 {titles === undefined || titles.length === 0 ? (
                     <></>
                 ) : (
-                    <TitleList 
-                        titles={titles} 
-                        onClickItem={(item) => {
-                            navigate(`/memes/${item.memeId}/titles/${item.id}`);
-                        }} 
-                    />
+                    <>
+                        <TitleList 
+                            titles={titles} 
+                            onClickItem={(item) => {
+                                navigate(`/memes/${item.memeId}/titles/${item.id}`);
+                            }} 
+                        />
+                        <div ref={pageRef}></div>
+                    </>
+
                 )}
                 
 
