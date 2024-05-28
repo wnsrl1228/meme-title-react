@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TitleList from "../components/meme/TitleList";
 import { useNavigate, useParams } from "react-router-dom";
 import { guestAxiosInstance } from "../api/axiosInterceptors";
 import TextInput from "../components/common/TextInput";
 import DefaultProfileImage from '../assets/profile_default_640.png'
+import useScrollPagination from "../hooks/useScrollPagination";
 
 const Wrapper = styled.div`
     padding: 16px;
@@ -55,6 +56,7 @@ const MyActivityButton = styled.button`
     background-color: white;
     border: 1px solid gainsboro;
     border-radius: 4px;
+    font-family: "GmarketSans";
 
 `
 const ProfileImage = styled.img`
@@ -87,27 +89,6 @@ const Score = styled.span`
     border-radius: 5px;
 
 `;
-const EmailInput = styled.input`
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    background-color: gainsboro;
-`;
-
-const Button = styled.button`
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #0056b3; /* 마우스 커서를 올렸을 때의 색상 */
-    }
-`;
 
 const ProfileLabel = styled.p`
     font-size: 24px;
@@ -136,7 +117,16 @@ const ProfilePage = (props) => {
 
     const navigate = useNavigate();
 
-
+    const fetchTitles = async (page, sort) => {
+        guestAxiosInstance.get(`/member/${memberId}/titles?page=${page}&size=20&sort=${sort},DESC`).then((res) => {
+            setTitles(prevItems => [...prevItems, ...res.data.titles]);
+            setIsLast(res.data.isLast);
+        }).catch((err) => {
+            alert(err.response.data.message);
+        })
+    };
+    const [isLast, setIsLast] = useState(false);
+    const pageRef = useScrollPagination(fetchTitles, isLast);
 
     useEffect(() => {
 
@@ -157,7 +147,7 @@ const ProfilePage = (props) => {
             alert(err.response.data.message);
         })
 
-    }, [])
+    }, [memberId, navigate])
 
 
 
@@ -192,12 +182,16 @@ const ProfilePage = (props) => {
                 {titles === undefined || titles.length === 0 ? (
                     <></>
                 ) : (
-                    <TitleList 
-                        titles={titles} 
-                        onClickItem={(item) => {
-                            navigate(`/memes/${item.memeId}/titles/${item.id}`);
-                        }} 
-                    />
+                    <>
+                        <TitleList 
+                            titles={titles} 
+                            onClickItem={(item) => {
+                                navigate(`/memes/${item.memeId}/titles/${item.id}`);
+                            }} 
+                        />
+                        <div ref={pageRef}></div>
+                    </>
+
                 )}
                 
 

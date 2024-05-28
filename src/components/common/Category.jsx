@@ -16,7 +16,7 @@ const CategoryButton = styled.button`
   border-radius: 5px;
   margin-right: 10px;
   cursor: ${({ active }) => (active ? 'default' : 'pointer')};
-
+  font-family: "GmarketSans";
   &:last-child {
     margin-right: 0;
   }

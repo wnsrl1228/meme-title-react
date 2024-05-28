@@ -128,7 +128,7 @@ const TitleCreatePage = () => {
           alert(error.response.data.message);
           navigate(-1)
         });
-    }, [])
+    }, [isLoggedIn, memeId,navigate])
 
     return (
         <Wrapper>

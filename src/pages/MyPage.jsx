@@ -61,6 +61,7 @@ const MyActivityButton = styled.button`
     background-color: white;
     border: 1px solid gainsboro;
     border-radius: 4px;
+    font-family: "GmarketSans";
 
 `
 const ProfileImage = styled.img`
@@ -99,6 +100,7 @@ const Button = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 4px;
+    font-family: "GmarketSans";
     cursor: pointer;
 
     &:hover {
@@ -175,15 +177,14 @@ const MyPage = (props) => {
       refToScroll.current.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const fetchTitles = async (page) => {
-        loggedInAxiosInstance.get(`/member/titles?page=${page}&size=20&sort=createdAt,DESC`).then((res) => {
+    const fetchTitles = async (page, sort) => {
+        loggedInAxiosInstance.get(`/member/titles?page=${page}&size=20&sort=${sort},DESC`).then((res) => {
             setTitles(prevItems => [...prevItems, ...res.data.titles]);
             setIsLast(res.data.isLast);
         }).catch((err) => {
             alert(err.response.data.message);
         })
     };
-
     const [isLast, setIsLast] = useState(false);
     const pageRef = useScrollPagination(fetchTitles, isLast);
     
@@ -205,14 +206,14 @@ const MyPage = (props) => {
             alert(err.response.data.message);
         })
 
-        fetchTitles(0);
+        fetchTitles(0, 'createdAt');
 
-    }, [])
+    }, [isLoggedIn, navigate])
 
 
 
-    const fetchComments = async (page) => {
-        loggedInAxiosInstance.get(`/member/comments?page=${page}&size=10&sort=createdAt,DESC`).then((res) => {
+    const fetchComments = async (page, sort) => {
+        loggedInAxiosInstance.get(`/member/comments?page=${page}&size=10&sort=${sort},DESC`).then((res) => {
             setComments(res.data.comments);
             setTotalPages(res.data.totalPages);
             setCurrentPage(res.data.page + 1)
@@ -223,7 +224,7 @@ const MyPage = (props) => {
 
     const handleMyCommentButton = () => {
         if (comments.length === 0) {
-            fetchComments(0);
+            fetchComments(0, 'createdAt');
         }
         setSelectedMyActivity("comments")
     }

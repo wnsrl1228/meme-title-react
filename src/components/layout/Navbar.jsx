@@ -35,6 +35,7 @@ const LoginButton = styled.button`
   border: none; /* 테두리 없음 */
   border-radius: 5px; /* 테두리 반경 */
   cursor: pointer; /* 커서 스타일 */
+  font-family: "GmarketSans";
   margin-right: 5px;
   &:hover {
     background-color: gray; /* 마우스 오버시 배경색 변경 */
@@ -45,11 +46,13 @@ const LoginButton = styled.button`
 // 네비게이션 바 컨테이너
 const TopContainer = styled.nav`
   width: 100%;
-  background-color: wheat; /* 네비게이션 바 배경색 *//* 텍스트 색상 */
   color: black;
   padding: 10px 20px; /* 내부 여백 */
   text-align: center;
   justify-content: center;
+  align-items: center;
+  background-color: #f5f5dc; /* 배경색을 부드러운 베이지 색으로 변경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가로 입체감 부여 */
 `;
 
 const ContentText = styled.p`
@@ -81,14 +84,6 @@ const MenuItem = styled.li`
 
 // 네비게이션 메뉴 링크 스타일링
 const MenuLink = styled.a`
-  color: black; /* 링크 텍스트 색상 */
-  text-decoration: none; /* 밑줄 제거 */
-  &:hover {
-    text-decoration: underline; /* 호버시 밑줄 표시 */
-  }
-`;
-
-const Ranking = styled.a`
   color: black; /* 링크 텍스트 색상 */
   text-decoration: none; /* 밑줄 제거 */
   &:hover {
@@ -176,9 +171,8 @@ const Navbar = () => {
           // 전송 중 오류가 발생한 경우 처리합니다.
           alert(err.response.data.message);
       });
-      console.log(memberInfo)
   } 
-  }, [isLoggedIn]);
+  }, [isLoggedIn, updateMemberInfo]);
 
   return (
     <Wrapper>

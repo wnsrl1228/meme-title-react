@@ -25,8 +25,7 @@ const Container = styled.div`
     }
 `;
 
-const MainPage = (props) => {
-    const {} = props;
+const MainPage = () => {
     const [memes, setMemes] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();

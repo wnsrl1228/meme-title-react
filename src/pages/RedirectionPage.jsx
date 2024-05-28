@@ -53,7 +53,7 @@ const RedirectionPage = () => {
       }).catch((err) => {
         alert(err);
       });
-    }, []);
+    }, [code, isLoggedIn, login, navigate]);
   
     return (
       <Wrapper>
