@@ -200,6 +200,7 @@ const Navbar = () => {
                 <MenuList>
                     <MenuItem><MenuLink onClick={() => navigate("/")}>홈</MenuLink></MenuItem>
                     <MenuItem><MenuLink onClick={() => navigate("/ranking")}>순위</MenuLink></MenuItem>
+                    <MenuItem><MenuLink onClick={() => navigate("/chat/rooms")}>채팅</MenuLink></MenuItem>
                     {memberInfo === 1 && <MenuLink onClick={() => navigate("/meme/create")}>밈 생성</MenuLink>}
                 </MenuList>
             </NavbarContainer>

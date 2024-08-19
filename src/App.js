@@ -15,6 +15,8 @@ import ProfilePage from './pages/ProfilePage';
 import ScrollToTop from './util/ScrollToTop';
 import NotFoundPage from './pages/NotFoundPage';
 import MemeCreatePage from './pages/MemeCreatePage';
+import ChatRoomsPage from './pages/ChatRoomsPage';
+import ChatViewPage from './pages/ChatViewPage';
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
                     <Route path="/memes/:memeId/titles/create" element={<TitleCreatePage />} />
                     <Route path="/member/mypage" element={<MyPage />} />
                     <Route path="/ranking" element={<RankingPage />} />
+                    <Route path="/chat/rooms" element={<ChatRoomsPage />} />
+                    <Route path="/chat/rooms/:roomId" element={<ChatViewPage />} />
                     <Route path="/members/:memberId" element={<ProfilePage />} />
                     <Route path="/meme/create" element={<MemeCreatePage />} />
                     <Route path="*" element={<NotFoundPage />} />
