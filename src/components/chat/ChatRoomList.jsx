@@ -7,6 +7,7 @@ const Wrapper = styled.div`
     max-width: 860px;
     display: grid;
     grid-gap: 32px;
+    height: 200px;
     
     /* 3개, 2개, 1개의 그리드로 조정 */
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import ChatRoomList from "../components/chat/ChatRoomList";
+import TitleListLoading from "../components/common/TitleListLoading";
+import { guestAxiosInstance } from "../api/axiosInterceptors";
 
 const Wrapper = styled.div`
     padding: 16px;
@@ -13,20 +15,31 @@ const Wrapper = styled.div`
 `;
 
 const ChatRoomsPage = (props) => {
+    
+    const [chatRooms, setChatRooms] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    // 임시 데이터
-    const chatRooms = [
-        { id: 1, name: 'Chat Room 1' },
-        { id: 2, name: 'Chat Room 2' },
-        { id: 3, name: 'Chat Room 3' },
-        ];
+
+    useEffect(() => {
+        guestAxiosInstance.get(`/chat/rooms`).then((res) => {
+            setChatRooms(res.data.chatRooms);
+            setLoading(false)
+        }).catch((err) => {
+            alert(err.response.data.message);
+            navigate(-1)
+        })
+    }, [])
     return (
-        <Wrapper>
-            <ChatRoomList 
-                chatRooms={chatRooms} 
-                onClickItem={(item) => {
-                    navigate(`/chat/rooms/${item.id}`);
+        <Wrapper>  
+            {loading === true ? (
+                <TitleListLoading/>
+            ) : (
+                <ChatRoomList 
+                    chatRooms={chatRooms} 
+                    onClickItem={(item) => {
+                        navigate(`/chat/rooms/${item.id}`);
                 }} />
+            )}
         </Wrapper>
     );
 }

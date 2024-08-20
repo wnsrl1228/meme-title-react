@@ -1,6 +1,7 @@
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-
+import { Stomp } from "@stomp/stompjs";
 const Wrapper = styled.div`
     padding: 16px;
     width: calc(100% - 32px);
@@ -132,22 +133,51 @@ const BackButton = styled.button`
 
 const ChatViewPage = () => {
     const {roomId} = useParams();
+    const stompClient = useRef(null);
+    const [messages, setMessages] = useState([]);
+    const [inputValue, setInputValue] = useState('');
 
-        // 임시 데이터 예제
-        const messages = [
-            { id: 1, username: "User1", text: "HelHelloHelloHelloHelloHelHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloloHelHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHellololoHelloHelloHelloHelloHelloHelloHellolo!", timestamp: "2024-08-19 10:00" },
-            { id: 2, username: "User3", text: "Hi there!", timestamp: "2024-08-19 10:05" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-            { id: 3, username: "User1", text: "How are you?", timestamp: "2024-08-19 10:10" },
-        ];
+    // 웹 소켓 연결 설정
+    const connect = () => {
+      //웹소켓 연결
+        const socket = new WebSocket("ws://localhost:8080/ws");
+        stompClient.current = Stomp.over(socket);
+        stompClient.current.connect({}, () => {
+        //메시지 수신(1은 roomId를 임시로 표현)
+          stompClient.current.subscribe(`/sub/chat/messages`, (message) => {
+              //누군가 발송했던 메시지를 리스트에 추가
+              console.log(`${message} 메세지이다.`)
+              const newMessage = JSON.parse(message.body).body;
+              setMessages(prevMessages => [...prevMessages, newMessage]);
+            });
+        });
+      };
+
+    // 웹소켓 연결 해제
+    const disconnect = () => {
+      if (stompClient.current) {
+        stompClient.current.disconnect();
+      }
+    };
+    
+    //메세지 전송
+    const sendMessage = () => {
+      if (stompClient.current && inputValue) {
+        const body = {
+          nickname : "테스트1",
+          message : inputValue
+        };
+        stompClient.current.send(`/pub/chat/message`, {}, JSON.stringify(body));
+        setInputValue('');
+      }
+    };
+
+    useEffect(() => {
+      connect();
+      // 컴포넌트 언마운트 시 웹소켓 연결 해제
+      return () => disconnect();
+    }, []);
+
     return (
         <Wrapper>
             <Container>
@@ -156,23 +186,29 @@ const ChatViewPage = () => {
                     <BackButton>뒤로가기</BackButton>
                 </BackButtonContainer>
                 <MessageList>
-                    {messages.map((msg) => (
-                        <MessageWrapper key={msg.id}>
-                            <Username>{msg.username}</Username>
+                    {messages.map((msg, index) => (
+                        <MessageWrapper key={index}>
+                            <Username>{msg.nickname}</Username>
                             <MessageAndTimeWrapper>
                                 <Message>                                
-                                    {msg.text}
+                                    {msg.message}
                                     
                                 </Message>
-                                <Timestamp>{msg.timestamp}</Timestamp>
+                                <Timestamp>임시날짜</Timestamp>
                             </MessageAndTimeWrapper>
 
                         </MessageWrapper>
                     ))}
                 </MessageList>
                 <InputForm>
-                    <InputField type="text" placeholder="Type a message..." />
-                    <SendButton>Send</SendButton>
+                    <InputField 
+                        type="text" 
+                        value={inputValue}
+                        onChange={(event) => {
+                          setInputValue(event.target.value);
+                        }}
+                        placeholder="내용을 입력해주세요." />
+                    <SendButton onClick={sendMessage}>보내기</SendButton>
                 </InputForm>
 
             </Container>

@@ -6,8 +6,6 @@ const Wrapper = styled.div`
     padding: 0px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     border: none;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); /* 흐릿한 테두리 효과 */
     border-radius: 8px;
@@ -18,13 +16,27 @@ const Wrapper = styled.div`
     }
 `;
 
+const TitleTextWrapper = styled.div`
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+`
 const TitleText = styled.p`
     font-size: 20px;
-    font-weight: 500;
-    padding-left: 10px;
-    padding-right: 10px;
 `
 
+const CountTextWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 15px;
+`
+const CountText = styled.p`
+    font-size: 20px;
+`
 const ChatRoomListItem = (props) => {
 
     const {chatRoom, onClick} = props;
@@ -32,7 +44,14 @@ const ChatRoomListItem = (props) => {
     return (
         <Wrapper onClick={() => {onClick(chatRoom)}}>
 
-            <TitleText>{chatRoom.name}</TitleText>
+            <TitleTextWrapper>
+                <TitleText>{chatRoom.name}</TitleText>
+            </TitleTextWrapper>
+            <CountTextWrapper>
+                <CountText>{chatRoom.memberCount}/{chatRoom.maxCapacity}</CountText>
+            </CountTextWrapper>
+            
+            
         </Wrapper>
     )
 }
