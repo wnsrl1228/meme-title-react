@@ -144,7 +144,7 @@ const ChatViewPage = () => {
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
         //메시지 수신(1은 roomId를 임시로 표현)
-          stompClient.current.subscribe(`/sub/chat/messages`, (message) => {
+          stompClient.current.subscribe(`/sub/chat/${roomId}/messages`, (message) => {
               //누군가 발송했던 메시지를 리스트에 추가
               console.log(`${message} 메세지이다.`)
               const newMessage = JSON.parse(message.body).body;
@@ -167,7 +167,7 @@ const ChatViewPage = () => {
           nickname : "테스트1",
           message : inputValue
         };
-        stompClient.current.send(`/pub/chat/message`, {}, JSON.stringify(body));
+        stompClient.current.send(`/pub/chat/${roomId}/message`, {}, JSON.stringify(body));
         setInputValue('');
       }
     };

@@ -11,8 +11,9 @@ const Wrapper = styled.div`
     border-radius: 8px;
     cursor: pointer;
     background: white;
+
     :hover {
-        background: lightgray;
+        background: lightgray
     }
 `;
 
@@ -33,6 +34,7 @@ const CountTextWrapper = styled.div`
     justify-content: right;
     align-items: center;
     padding-right: 15px;
+    pointer-events: none;
 `
 const CountText = styled.p`
     font-size: 20px;
