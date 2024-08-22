@@ -37,7 +37,12 @@ const ChatRoomsPage = (props) => {
                 <ChatRoomList 
                     chatRooms={chatRooms} 
                     onClickItem={(item) => {
-                        navigate(`/chat/rooms/${item.id}`);
+                        if (item.memberCount < item.maxCapacity) {
+                            navigate(`/chat/rooms/${item.id}`);
+                        } else {
+                            alert("채팅방에 인원이 초과되었습니다.");
+                        }
+                        
                 }} />
             )}
         </Wrapper>

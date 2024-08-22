@@ -158,7 +158,7 @@ const ChatViewPage = () => {
     // 웹 소켓 연결 설정
     const connect = () => {
       //웹소켓 연결
-        const socket = new WebSocket("ws://localhost:8080/ws");
+        const socket = new WebSocket(`ws://localhost:8080/ws/${roomId}`);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
         //메시지 수신(1은 roomId를 임시로 표현)
@@ -168,8 +168,14 @@ const ChatViewPage = () => {
               const newMessage = JSON.parse(message.body).body;
               setMessages(prevMessages => [...prevMessages, newMessage]);
             });
+        }, (error) => {
+          alert("잠시 후 다시 시도해주세요.")
+        }, ()=> {
+          alert("채팅방에 인원이 초과되었습니다.")
+          navigate(-1);
         });
       };
+
 
     // 웹소켓 연결 해제
     const disconnect = () => {
