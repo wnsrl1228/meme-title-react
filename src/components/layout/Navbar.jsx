@@ -127,7 +127,7 @@ const UserContainer = styled.a`
 const Navbar = () => {
 
   const navigate = useNavigate();
-  const { isLoggedIn, logout, updateMemberInfo, memberInfo } = useAuth();
+  const { isLoggedIn, logout, updateMemberInfo, memberInfo, updateMemberNickname} = useAuth();
   const [nickname, setNickname] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
 
@@ -139,6 +139,7 @@ const Navbar = () => {
       localStorage.removeItem("ACCESS_TOKEN")
       logout();
       updateMemberInfo(-1);
+      updateMemberNickname('')
       navigate('/');
     }).catch((error) => {
       localStorage.removeItem("ACCESS_TOKEN")
@@ -157,6 +158,7 @@ const Navbar = () => {
           setNickname(res.data.nickname);
           setImgUrl(res.data.imgUrl);
           updateMemberInfo(res.data.memberId);
+          updateMemberNickname(res.data.nickname);
       }).catch((err) => {
           // 전송 중 오류가 발생한 경우 처리합니다.
           alert(err.response.data.message);
@@ -172,7 +174,7 @@ const Navbar = () => {
           alert(err.response.data.message);
       });
   } 
-  }, [isLoggedIn, updateMemberInfo]);
+  }, [isLoggedIn, updateMemberInfo, updateMemberNickname]);
 
   return (
     <Wrapper>
@@ -200,6 +202,7 @@ const Navbar = () => {
                 <MenuList>
                     <MenuItem><MenuLink onClick={() => navigate("/")}>홈</MenuLink></MenuItem>
                     <MenuItem><MenuLink onClick={() => navigate("/ranking")}>순위</MenuLink></MenuItem>
+                    <MenuItem><MenuLink onClick={() => navigate("/chat/rooms")}>채팅</MenuLink></MenuItem>
                     {memberInfo === 1 && <MenuLink onClick={() => navigate("/meme/create")}>밈 생성</MenuLink>}
                 </MenuList>
             </NavbarContainer>

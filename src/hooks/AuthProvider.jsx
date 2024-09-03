@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const initialLoggedInState = localStorage.getItem('ACCESS_TOKEN') === null ? false : true;
   const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedInState);
   const [memberInfo, setMemberInfo] = useState(-1);
+  const [memberNickname, setMemberNickname] = useState('');
 
   const login = () => {
     setIsLoggedIn(true);
@@ -26,6 +27,10 @@ export const AuthProvider = ({ children }) => {
     setMemberInfo(memberId);
   }
 
+  const updateMemberNickname = (nickname) => {
+    setMemberNickname(nickname);
+  }
+
   // 컴포넌트가 마운트될 때 로그인 상태를 초기화합니다.
   useEffect(() => {
     const storedLoggedInState = localStorage.getItem('ACCESS_TOKEN') === null ? false : true;
@@ -34,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, updateMemberInfo ,memberInfo}}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, updateMemberInfo ,memberInfo, memberNickname, updateMemberNickname}}>
       {children}
     </AuthContext.Provider>
   );
