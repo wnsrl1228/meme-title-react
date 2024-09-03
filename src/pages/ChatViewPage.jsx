@@ -162,7 +162,6 @@ const ChatViewPage = () => {
     const connect = useCallback(async () =>{
       //웹소켓 연결
         const url = `${SOCKET_URL}/ws/${roomId}`
-        console.log(url)
         const socket = new WebSocket(url);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
