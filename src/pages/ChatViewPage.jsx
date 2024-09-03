@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Stomp } from "@stomp/stompjs";
 import { useAuth } from "../hooks/AuthProvider";
@@ -156,7 +156,7 @@ const ChatViewPage = () => {
     const messageListRef = useRef(null);
     const navigate = useNavigate();
     // 웹 소켓 연결 설정
-    const connect = () => {
+    const connect = useCallback(async () =>{
       //웹소켓 연결
         const socket = new WebSocket(`ws://localhost:8080/ws/${roomId}`);
         stompClient.current = Stomp.over(socket);
@@ -173,7 +173,7 @@ const ChatViewPage = () => {
         }, ()=> {
           navigate("/chat/rooms");
         });
-      };
+      }, [navigate, roomId]);
 
 
     // 웹소켓 연결 해제
@@ -196,8 +196,8 @@ const ChatViewPage = () => {
         setInputValue('');
       }
     };
-
-    const getUserInput = () => {
+  
+    const getUserInput = useCallback(async () =>  {
         const userInput = prompt("닉네임을 입력해주세요");
             
         // 사용자가 취소를 누르면 null을 반환하므로 이전 페이지로 이동
@@ -218,7 +218,8 @@ const ChatViewPage = () => {
             setNickname(finalNickname);
             connect();
         }
-    }
+    }, [connect])
+
     const handleKeyDown = (event) => {
       if (event.key === "Enter") {
           sendMessage(); // 엔터 키를 누르면 메시지 전송
@@ -235,13 +236,14 @@ const ChatViewPage = () => {
 
       // 컴포넌트 언마운트 시 웹소켓 연결 해제
       return () => disconnect();
-    }, []);
+    }, [connect, getUserInput, isLoggedIn, memberNickname]);
     // 메시지가 업데이트될 때마다 스크롤을 가장 아래로 이동
     useEffect(() => {
         if (messageListRef.current) {
             messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
         }
     }, [messages]);
+    
     return (
         <Wrapper>
             <Container>

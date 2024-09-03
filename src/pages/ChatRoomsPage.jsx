@@ -18,8 +18,8 @@ const ChatRoomsPage = (props) => {
     
     const [chatRooms, setChatRooms] = useState([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-
+    const navigate = useNavigate(); 
+  
     useEffect(() => {
         guestAxiosInstance.get(`/chat/rooms`).then((res) => {
             setChatRooms(res.data.chatRooms);
@@ -28,7 +28,7 @@ const ChatRoomsPage = (props) => {
             alert(err.response.data.message);
             navigate(-1)
         })
-    }, [])
+    }, [navigate])
     return (
         <Wrapper>  
             {loading === true ? (
