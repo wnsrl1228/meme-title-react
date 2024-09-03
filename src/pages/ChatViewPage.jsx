@@ -171,8 +171,7 @@ const ChatViewPage = () => {
         }, (error) => {
           alert("잠시 후 다시 시도해주세요.")
         }, ()=> {
-          alert("채팅방에 인원이 초과되었습니다.")
-          navigate(-1);
+          navigate("/chat/rooms");
         });
       };
 
