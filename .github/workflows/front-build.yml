@@ -24,6 +24,7 @@ jobs:
           echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> .env
           echo "REACT_APP_KAKAO_CLIENT_ID=${{ secrets.REACT_APP_KAKAO_CLIENT_ID }}" >> .env
           echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> .env
+          echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> .env
 
       - name: install npm dependencies
         run: npm install
