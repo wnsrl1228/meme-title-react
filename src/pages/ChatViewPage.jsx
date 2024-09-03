@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Stomp } from "@stomp/stompjs";
 import { useAuth } from "../hooks/AuthProvider";
 import chatTimeFormat from "../util/chatTimeFormat";
+import { SOCKET_URL } from "../constants/api";
+
 const Wrapper = styled.div`
     padding: 16px;
     width: calc(100% - 32px);
@@ -155,10 +157,11 @@ const ChatViewPage = () => {
     const {isLoggedIn, memberNickname} = useAuth();
     const messageListRef = useRef(null);
     const navigate = useNavigate();
-    // 웹 소켓 연결 설정
+
+    // 웹 소켓 연결 설정 SOCKET_URL
     const connect = useCallback(async () =>{
       //웹소켓 연결
-        const socket = new WebSocket(`ws://localhost:8080/ws/${roomId}`);
+        const socket = new WebSocket(`${SOCKET_URL}/ws/${roomId}`);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
         //메시지 수신(1은 roomId를 임시로 표현)
