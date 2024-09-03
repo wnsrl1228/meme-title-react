@@ -158,10 +158,12 @@ const ChatViewPage = () => {
     const messageListRef = useRef(null);
     const navigate = useNavigate();
 
-    // 웹 소켓 연결 설정 SOCKET_URL
+    // 웹 소켓 연결 설정 SOCKET_URLasd
     const connect = useCallback(async () =>{
       //웹소켓 연결
-        const socket = new WebSocket(`${SOCKET_URL}/ws/${roomId}`);
+        const url = `${SOCKET_URL}/ws/${roomId}`
+        console.log(url)
+        const socket = new WebSocket(url);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
         //메시지 수신(1은 roomId를 임시로 표현)
